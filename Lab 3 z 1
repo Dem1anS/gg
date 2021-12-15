@@ -1,0 +1,105 @@
+using System;
+using System.Text;
+
+namespace SharpFignya
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            GeometricProgression ap = new GeometricProgression(1, 2);
+            Console.WriteLine(ap.Sum(0, 2));
+        }
+    }
+    abstract class Progression
+    {
+        public abstract int At(int i);
+        virtual public int Sum(int begin, int end)
+        {
+            int sum = 0;
+            for (int i = begin; i < end; ++i) sum += this.At(i);
+            return sum;
+        }
+    }
+    class ArithmeticProgression : Progression
+    {
+        int a;
+        int d;
+        public int A
+        {
+            get
+            { 
+                return a; 
+            } 
+            set 
+            { 
+                a = value; 
+            } 
+        }
+        public int D
+        {
+            get
+            {
+                return d;
+            }
+            set 
+            { 
+                d = value;
+            }
+        }
+        public ArithmeticProgression(int A, int D)
+        {
+            this.a = A;
+            this.d = D;
+        }
+        public override int At(int i)
+        {
+            return a + i * d;
+        }
+        public override int Sum(int begin, int end)
+        {
+            return (this.At(begin) + this.At(end - 1)) * (end - begin) / 2;
+        }
+    }
+    class GeometricProgression : Progression
+    {
+        int b;
+        int q;
+        public int B
+        {
+            get
+            {
+                return b;
+            }
+            set
+            {
+                b = value;
+            }
+        }
+        public int Q
+        {
+            get
+            {
+                return q;
+            }
+            set
+            {
+                q = value;
+            }
+        }
+        public GeometricProgression(int B, int Q)
+        {
+            this.b = B;
+            this.q = Q;
+        }
+        public override int At(int i)
+        {
+            return b * (int)Math.Pow(q, i);
+        }
+        public override int Sum(int begin, int end)
+        {
+            if (q == 1) return (end - begin) * b;
+            return this.At(begin) * ((int)Math.Pow(q, end - begin) - 1) / (q - 1);
+        }
+    }
+}
