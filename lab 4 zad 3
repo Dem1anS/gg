@@ -1,0 +1,377 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Autopark
+    {
+
+        List<Avto> car = new List<Avto>();
+        List<Driver> drivers = new List<Driver>();
+        List<Brigade> brig = new List<Brigade>();
+        List<Trip> reis = new List<Trip>();
+        public enum stat
+        {
+            in_trip = 0,
+            in_repair = 1,
+            is_free = 2
+        }
+        public Autopark()
+
+        {
+            Menu.mainmenu();
+            choice(int.Parse(Console.ReadLine().ToString()));
+        }
+        void choice(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    avtom();
+                    break;
+                case 2:
+                    driver();
+                    break;
+                case 3:
+                    formbrigade();
+                    break;
+                case 4:
+                    trips();
+                    break;
+                case 5:
+                    repair();
+                    break;
+                case 6:
+                    isrepair();
+                    break;
+                case 7:
+                    vozvr();
+                    break;
+
+
+
+            }
+            Menu.mainmenu();
+            choice(int.Parse(Console.ReadLine().ToString()));
+
+        }
+        void avtom()
+        {
+            string d = "";
+            while (d != "да")
+            {
+                Avto av = new Avto();
+                Console.WriteLine(" введите марку  автомобиля");
+                d = Console.ReadLine().ToString();
+                av.marka_avto = d;
+                Console.WriteLine(" введите номер  автомобиля");
+                d = Console.ReadLine().ToString();
+                av.nomer_avto = d;
+                av.stat_avto = stat.is_free.ToString();
+                car.Add(av);
+                Console.WriteLine(" закончить ввод да/нет");
+                d = Console.ReadLine().ToString();
+
+            }
+            int i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+        }
+        void driver()
+        {
+            string d = "";
+            while (d != "да")
+            {
+                Driver av = new Driver();
+                Console.WriteLine(" введите ФИО водителя");
+                d = Console.ReadLine().ToString();
+                av.driv_fio = d;
+                drivers.Add(av);
+                Console.WriteLine(" закончить ввод да/нет");
+                d = Console.ReadLine().ToString();
+
+            }
+            int i = 1;
+            foreach (var a in drivers)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+        }
+        void formbrigade()
+        {
+            Console.WriteLine(" Список водителей ");
+            int i = 1;
+            foreach (var a in drivers)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+
+            Console.WriteLine(" Введите номера  водителей первой бригады");
+            brig.Clear();
+            string d = "";
+            while (d != "да")
+            {
+                Brigade av = new Brigade();
+                string d1 = "";
+                while (d1 != "да")
+                {
+                    Console.WriteLine(" номер водителя");
+                    d1 = Console.ReadLine().ToString();
+                    int ii = 1;
+                    foreach (var s in drivers)
+                    {
+
+
+                        if (ii.ToString() == d1)
+                        {
+                            av.add(s.ToString());
+
+                        }
+                        ii++;
+
+                    }
+
+
+                    Console.WriteLine(" закончить ввод водителей да/нет");
+                    d1 = Console.ReadLine().ToString();
+                }
+                brig.Add(av);
+                Console.WriteLine(" Закончить ввод бригад да/нет");
+                d = Console.ReadLine().ToString();
+            }
+
+            i = 1;
+            foreach (var a in brig)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+        }
+        void trips()
+        {
+            int i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+            Console.WriteLine(" Введите порядковый номер автомобиля/ автомобилей");
+
+            var av = car[int.Parse(Console.ReadLine().ToString()) - 1];
+            av.stat_avto = stat.in_trip.ToString();
+            i = 1;
+            foreach (var a in brig)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+
+            Console.WriteLine(" Введите порядковый номер бригады");
+
+            var br = brig[int.Parse(Console.ReadLine().ToString()) - 1];
+
+
+            Trip r = new Trip(av, br);
+            reis.Add(r);
+
+
+            i = 1;
+            foreach (var e in reis)
+            {
+                Console.WriteLine(i.ToString() + " " + e.av.ToString() + " " + e.brig.ToString());
+                i++;
+            }
+
+        }
+        void repair()
+        {
+            int i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+            Console.WriteLine(" Введите порядковый номер автомобиля для ремонта");
+            var av = car[int.Parse(Console.ReadLine().ToString()) - 1];
+            av.stat_avto = stat.in_repair.ToString();
+
+            i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+
+        }
+        void isrepair()
+        {
+            int i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+            Console.WriteLine(" Введите порядковый номер автомобиля для ремонта");
+            var av = car[int.Parse(Console.ReadLine().ToString()) - 1];
+            av.stat_avto = stat.is_free.ToString();
+
+            i = 1;
+            foreach (var a in car)
+            {
+                Console.WriteLine(i.ToString() + " " + a.ToString());
+                i++;
+            }
+
+        }
+        void vozvr()
+        {
+            int i = 1;
+            foreach (var e in reis)
+            {
+                Console.WriteLine(i.ToString() + " " + e.av.ToString() + " " + e.brig.ToString());
+                i++;
+            }
+            Console.WriteLine(" Введите порядковый номер ");
+
+            var br = reis[int.Parse(Console.ReadLine().ToString()) - 1];
+            br.av.stat_avto = stat.is_free.ToString();
+
+            i = 1;
+            foreach (var e in reis)
+            {
+                Console.WriteLine(i.ToString() + " " + e.av.ToString() + " " + e.brig.ToString());
+                i++;
+            }
+
+        }
+    }
+}
+
+//новый класс
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Trip
+    {
+        public Avto av { get; set; }
+        public Brigade brig { get; set; }
+        public Trip(Avto d, Brigade b)
+        {
+            av = d;
+            brig = b;
+
+        }
+    }
+}
+
+//новый класс
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Brigade
+    {
+        public List<string> brig= new List<string>() ;
+        public void add(string s)
+        {
+            brig.Add(s);
+        }
+        public override string ToString()
+        {
+            string ss = "";
+            foreach (string s in brig)
+            { ss = ss + " " + s; }
+            return "бригада водителей  " + ss;
+        }
+    }
+}
+
+//новый класс
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Driver
+    {
+        public string driv_fio { get; set; }
+        public override string ToString()
+        {
+            return driv_fio;
+        }
+    }
+}
+
+
+//новый класс
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Avto
+    {
+        public string marka_avto { get; set; }
+        public string nomer_avto { get; set; }
+        public string stat_avto { get; set; }
+
+
+        public override string ToString()
+        {
+            return marka_avto + "  " + nomer_avto + " " + stat_avto;
+
+        }
+
+    }
+}
+
+//новый класс
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace лаб_раб_4._3
+{
+    class Menu
+    {
+        public static void mainmenu()
+        {
+
+            Console.WriteLine(" 1  ввод сведений о автомобилях");
+            Console.WriteLine(" 2  ввод сведений о водителях");
+            Console.WriteLine(" 3  ввод сведений о бригадах водителей");
+            Console.WriteLine(" 4  ввод сведений о рейсе");
+            Console.WriteLine(" 5  ввод сведений о ремонте");
+            Console.WriteLine(" 6  ввод сведений о выходе из ремонта");
+            Console.WriteLine(" 7  ввод возвращения из рейса");
+
+        }
+
+    }
+//новый класс (основной)
+using System;
+
+namespace лаб_раб_4._3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Autopark av = new Autopark();
+        }
+    }
+}
+
